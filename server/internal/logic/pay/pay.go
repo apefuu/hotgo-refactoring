@@ -97,7 +97,7 @@ func (s *sPay) Export(ctx context.Context, in payin.PayListInp) (err error) {
 		return
 	}
 
-	err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName)
+	err = excel.ExportByStructs[any](ctx, tags, exports, fileName, sheetName)
 	return
 }
 

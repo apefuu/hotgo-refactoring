@@ -67,7 +67,7 @@ func New(name ...string) UploadDrive {
 }
 
 // DoUpload 上传入口
-func DoUpload(ctx context.Context, typ string, file *ghttp.UploadFile) (result *entity.SysAttachment, err error) {
+func DoUpload[T any](ctx context.Context, typ string, file *ghttp.UploadFile) (result *entity.SysAttachment, err error) {
 	if file == nil {
 		err = gerror.New("文件必须!")
 		return
@@ -88,7 +88,7 @@ func DoUpload(ctx context.Context, typ string, file *ghttp.UploadFile) (result *
 	}
 
 	// 相同存储相同身份才复用
-	if result != nil && result.Drive == config.Drive && result.MemberId == contexts.GetUserId(ctx) && result.AppId == contexts.GetModule(ctx) {
+	if result != nil && result.Drive == config.Drive && result.MemberId == contexts.GetUserId[T](ctx) && result.AppId == contexts.GetModule[T](ctx) {
 		return
 	}
 
@@ -98,7 +98,7 @@ func DoUpload(ctx context.Context, typ string, file *ghttp.UploadFile) (result *
 		return
 	}
 	// 写入附件记录
-	return write(ctx, meta, fullPath)
+	return write[T](ctx, meta, fullPath)
 }
 
 // ValidateFileMeta 验证文件元数据
@@ -215,11 +215,11 @@ func GenFullPath(basePath, ext string) string {
 }
 
 // write 写入附件记录
-func write(ctx context.Context, meta *FileMeta, fullPath string) (models *entity.SysAttachment, err error) {
+func write[T any](ctx context.Context, meta *FileMeta, fullPath string) (models *entity.SysAttachment, err error) {
 	models = &entity.SysAttachment{
 		Id:        0,
-		AppId:     contexts.GetModule(ctx),
-		MemberId:  contexts.GetUserId(ctx),
+		AppId:     contexts.GetModule[T](ctx),
+		MemberId:  contexts.GetUserId[T](ctx),
 		Drive:     config.Drive,
 		Size:      meta.Size,
 		Path:      fullPath,
@@ -264,7 +264,7 @@ func HasFile(ctx context.Context, md5 string) (res *entity.SysAttachment, err er
 }
 
 // CheckMultipart 检查文件分片
-func CheckMultipart(ctx context.Context, in *CheckMultipartParams) (res *CheckMultipartModel, err error) {
+func CheckMultipart[T any](ctx context.Context, in *CheckMultipartParams) (res *CheckMultipartModel, err error) {
 	res = new(CheckMultipartModel)
 
 	meta := new(FileMeta)
@@ -295,7 +295,7 @@ func CheckMultipart(ctx context.Context, in *CheckMultipartParams) (res *CheckMu
 	}
 
 	// 文件已存在，直接返回。相同存储相同身份才复用
-	if result != nil && result.Drive == config.Drive && result.MemberId == contexts.GetUserId(ctx) && result.AppId == contexts.GetModule(ctx) {
+	if result != nil && result.Drive == config.Drive && result.MemberId == contexts.GetUserId[T](ctx) && result.AppId == contexts.GetModule[T](ctx) {
 		res.Attachment = result
 		return
 	}
@@ -305,7 +305,7 @@ func CheckMultipart(ctx context.Context, in *CheckMultipartParams) (res *CheckMu
 	}
 
 	in.meta = meta
-	progress, err := GetOrCreateMultipartProgress(ctx, in)
+	progress, err := GetOrCreateMultipartProgress[T](ctx, in)
 	if err != nil {
 		return nil, err
 	}
@@ -329,13 +329,13 @@ func CalcUploadProgress(uploadedIndex []int, shardCount int) float64 {
 }
 
 // GenUploadId 生成上传ID
-func GenUploadId(ctx context.Context, md5 string) string {
-	return fmt.Sprintf("%v:%v:%v@%v", md5, contexts.GetUserId(ctx), contexts.GetModule(ctx), config.Drive)
+func GenUploadId[T any](ctx context.Context, md5 string) string {
+	return fmt.Sprintf("%v:%v:%v@%v", md5, contexts.GetUserId[T](ctx), contexts.GetModule[T](ctx), config.Drive)
 }
 
 // GetOrCreateMultipartProgress 获取或创建分片上传事件进度
-func GetOrCreateMultipartProgress(ctx context.Context, in *CheckMultipartParams) (res *MultipartProgress, err error) {
-	uploadId := GenUploadId(ctx, in.Md5)
+func GetOrCreateMultipartProgress[T any](ctx context.Context, in *CheckMultipartParams) (res *MultipartProgress, err error) {
+	uploadId := GenUploadId[T](ctx, in.Md5)
 	res, err = GetMultipartProgress(ctx, uploadId)
 	if err != nil {
 		return nil, err

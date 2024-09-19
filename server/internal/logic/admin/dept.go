@@ -255,7 +255,7 @@ func (s *sAdminDept) GetName(ctx context.Context, id int64) (name string, err er
 func (s *sAdminDept) VerifyDeptId(ctx context.Context, id int64) (err error) {
 	var (
 		pid int64 = 0
-		mb        = contexts.GetUser(ctx)
+		mb        = contexts.GetUser[any](ctx)
 		mod       = dao.AdminDept.Ctx(ctx).Fields(dao.AdminDept.Columns().Id)
 	)
 
@@ -291,8 +291,8 @@ func (s *sAdminDept) Option(ctx context.Context, in *adminin.DeptOptionInp) (res
 	)
 
 	// 非超管只获取下级
-	if !service.AdminMember().VerifySuperId(ctx, contexts.GetUserId(ctx)) {
-		pid = contexts.GetUser(ctx).DeptId
+	if !service.AdminMember().VerifySuperId(ctx, contexts.GetUserId[any](ctx)) {
+		pid = contexts.GetUser[any](ctx).DeptId
 		mod = mod.WhereLike(dao.AdminDept.Columns().Tree, "%"+tree.GetIdLabel(pid)+"%")
 	}
 

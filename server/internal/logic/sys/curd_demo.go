@@ -129,7 +129,7 @@ func (s *sSysCurdDemo) Export(ctx context.Context, in *sysin.CurdDemoListInp) (e
 		return
 	}
 
-	err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName)
+	err = excel.ExportByStructs[any](ctx, tags, exports, fileName, sheetName)
 	return
 }
 
@@ -139,7 +139,7 @@ func (s *sSysCurdDemo) Edit(ctx context.Context, in *sysin.CurdDemoEditInp) (err
 
 		// 修改
 		if in.Id > 0 {
-			in.UpdatedBy = contexts.GetUserId(ctx)
+			in.UpdatedBy = contexts.GetUserId[any](ctx)
 			if _, err = s.Model(ctx).
 				Fields(sysin.CurdDemoUpdateFields{}).
 				WherePri(in.Id).Data(in).Update(); err != nil {
@@ -149,7 +149,7 @@ func (s *sSysCurdDemo) Edit(ctx context.Context, in *sysin.CurdDemoEditInp) (err
 		}
 
 		// 新增
-		in.CreatedBy = contexts.GetUserId(ctx)
+		in.CreatedBy = contexts.GetUserId[any](ctx)
 		if _, err = s.Model(ctx, &handler.Option{FilterAuth: false}).
 			Fields(sysin.CurdDemoInsertFields{}).
 			Data(in).OmitEmptyData().Insert(); err != nil {
@@ -163,7 +163,7 @@ func (s *sSysCurdDemo) Edit(ctx context.Context, in *sysin.CurdDemoEditInp) (err
 func (s *sSysCurdDemo) Delete(ctx context.Context, in *sysin.CurdDemoDeleteInp) (err error) {
 
 	if _, err = s.Model(ctx).WherePri(in.Id).Data(g.Map{
-		dao.SysGenCurdDemo.Columns().DeletedBy: contexts.GetUserId(ctx),
+		dao.SysGenCurdDemo.Columns().DeletedBy: contexts.GetUserId[any](ctx),
 		dao.SysGenCurdDemo.Columns().DeletedAt: gtime.Now(),
 	}).Update(); err != nil {
 		err = gerror.Wrap(err, "删除CURD列表失败，请稍后重试！")
@@ -200,7 +200,7 @@ func (s *sSysCurdDemo) View(ctx context.Context, in *sysin.CurdDemoViewInp) (res
 func (s *sSysCurdDemo) Status(ctx context.Context, in *sysin.CurdDemoStatusInp) (err error) {
 	if _, err = s.Model(ctx).WherePri(in.Id).Data(g.Map{
 		dao.SysGenCurdDemo.Columns().Status:    in.Status,
-		dao.SysGenCurdDemo.Columns().UpdatedBy: contexts.GetUserId(ctx),
+		dao.SysGenCurdDemo.Columns().UpdatedBy: contexts.GetUserId[any](ctx),
 	}).Update(); err != nil {
 		err = gerror.Wrap(err, "更新CURD列表状态失败，请稍后重试！")
 		return
@@ -222,7 +222,7 @@ func (s *sSysCurdDemo) Switch(ctx context.Context, in *sysin.CurdDemoSwitchInp) 
 
 	if _, err = s.Model(ctx).WherePri(in.Id).Data(g.Map{
 		in.Key:                                 in.Value,
-		dao.SysGenCurdDemo.Columns().UpdatedBy: contexts.GetUserId(ctx),
+		dao.SysGenCurdDemo.Columns().UpdatedBy: contexts.GetUserId[any](ctx),
 	}).Update(); err != nil {
 		err = gerror.Wrap(err, "更新CURD列表开关失败，请稍后重试！")
 		return

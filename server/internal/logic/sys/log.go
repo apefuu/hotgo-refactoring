@@ -101,7 +101,7 @@ func (s *sSysLog) Export(ctx context.Context, in *sysin.LogListInp) (err error) 
 		exportList = append(exportList, row)
 	}
 
-	err = excel.ExportByStructs(ctx, titleList, exportList, fileName, sheetName)
+	err = excel.ExportByStructs[any](ctx, titleList, exportList, fileName, sheetName)
 	return
 }
 
@@ -151,7 +151,7 @@ func (s *sSysLog) AutoLog(ctx context.Context) error {
 // AnalysisLog 解析日志数据
 func (s *sSysLog) AnalysisLog(ctx context.Context) entity.SysLog {
 	var (
-		mctx       = contexts.Get(ctx)
+		mctx       = contexts.Get[any](ctx)
 		response   = mctx.Response
 		user       = mctx.User
 		request    = ghttp.RequestFromCtx(ctx)

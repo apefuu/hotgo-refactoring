@@ -100,7 +100,7 @@ func (s *sSysOptionTreeDemo) Edit(ctx context.Context, in *sysin.OptionTreeDemoE
 		}
 		// 修改
 		if in.Id > 0 {
-			in.UpdatedBy = contexts.GetUserId(ctx)
+			in.UpdatedBy = contexts.GetUserId[any](ctx)
 			if _, err = s.Model(ctx).
 				Fields(sysin.OptionTreeDemoUpdateFields{}).
 				WherePri(in.Id).Data(in).Update(); err != nil {
@@ -110,7 +110,7 @@ func (s *sSysOptionTreeDemo) Edit(ctx context.Context, in *sysin.OptionTreeDemoE
 		}
 
 		// 新增
-		in.CreatedBy = contexts.GetUserId(ctx)
+		in.CreatedBy = contexts.GetUserId[any](ctx)
 		if _, err = s.Model(ctx, &handler.Option{FilterAuth: false}).
 			Fields(sysin.OptionTreeDemoInsertFields{}).
 			Data(in).OmitEmptyData().Insert(); err != nil {

@@ -27,11 +27,11 @@ func (s *sHook) accessLog(r *ghttp.Request) {
 	}
 
 	var ctx = r.Context()
-	if contexts.Get(ctx) == nil {
+	if contexts.Get[any](ctx) == nil {
 		return
 	}
 
-	contexts.SetDataMap(ctx, g.Map{
+	contexts.SetDataMap[any](ctx, g.Map{
 		"request.takeUpTime": gtime.Now().Sub(gtime.New(r.EnterTime)).Milliseconds(),
 		// ...
 	})

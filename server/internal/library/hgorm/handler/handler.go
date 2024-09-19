@@ -30,13 +30,13 @@ func Model(m *gdb.Model, opt ...*Option) *gdb.Model {
 		option = DefaultOption
 	}
 	if option.FilterAuth {
-		m = m.Handler(FilterAuth)
+		m = m.Handler(FilterAuth[any])
 	}
 	if option.ForceCache {
 		m = m.Handler(ForceCache)
 	}
 	if option.FilterTenant {
-		m = m.Handler(FilterTenant)
+		m = m.Handler(FilterTenant[any])
 	}
 	return m
 }

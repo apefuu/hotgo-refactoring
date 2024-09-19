@@ -64,7 +64,7 @@ func (s *sCommonWechat) Authorize(ctx context.Context, in *commonin.WechatAuthor
 		prefix      = g.Cfg().MustGet(ctx, "router.admin.prefix", "/admin").String()
 		path        = gmeta.Get(common.WechatAuthorizeCallReq{}, "path").String()
 		redirectUri = basic.Domain + prefix + path
-		memberId    = contexts.GetUserId(ctx)
+		memberId    = contexts.GetUserId[any](ctx)
 		state       = s.GetCacheKey(in.Type, token.GetAuthKey(token.GetAuthorization(request)))
 		scope       string
 	)

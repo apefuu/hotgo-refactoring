@@ -46,7 +46,7 @@ func (c *cMember) UpdateProfile(ctx context.Context, req *member.UpdateProfileRe
 
 // UpdatePwd 修改登录密码
 func (c *cMember) UpdatePwd(ctx context.Context, req *member.UpdatePwdReq) (res *member.UpdatePwdRes, err error) {
-	var memberId = contexts.Get(ctx).User.Id
+	var memberId = contexts.Get[any](ctx).User.Id
 	if memberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return

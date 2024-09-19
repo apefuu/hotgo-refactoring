@@ -48,7 +48,7 @@ func (c *cCash) List(ctx context.Context, req *cash.ListReq) (res *cash.ListRes,
 func (c *cCash) Apply(ctx context.Context, req *cash.ApplyReq) (res *cash.ApplyRes, err error) {
 	err = service.AdminCash().Apply(ctx, &adminin.CashApplyInp{
 		Money:    req.Money,
-		MemberId: contexts.GetUserId(ctx),
+		MemberId: contexts.GetUserId[any](ctx),
 	})
 	return
 }

@@ -128,7 +128,7 @@ func (s *sSysTable) Export(ctx context.Context, in *sysin.TableListInp) (err err
 		return
 	}
 
-	if err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName); err != nil {
+	if err = excel.ExportByStructs[any](ctx, tags, exports, fileName, sheetName); err != nil {
 		return
 	}
 	return
@@ -143,7 +143,7 @@ func (s *sSysTable) Edit(ctx context.Context, in *sysin.TableEditInp) (err error
 
 	// 修改
 	if in.Id > 0 {
-		in.UpdatedBy = contexts.GetUserId(ctx)
+		in.UpdatedBy = contexts.GetUserId[any](ctx)
 		if _, err = s.Model(ctx).WherePri(in.Id).Data(in).Update(); err != nil {
 			err = gerror.Wrap(err, "修改表格失败，请稍后重试！")
 			return
@@ -152,7 +152,7 @@ func (s *sSysTable) Edit(ctx context.Context, in *sysin.TableEditInp) (err error
 	}
 
 	// 新增
-	in.CreatedBy = contexts.GetUserId(ctx)
+	in.CreatedBy = contexts.GetUserId[any](ctx)
 	if _, err = s.Model(ctx, &handler.Option{FilterAuth: false}).Data(in).OmitEmptyData().Insert(); err != nil {
 		err = gerror.Wrap(err, "新增表格失败，请稍后重试！")
 		return
@@ -173,7 +173,7 @@ func (s *sSysTable) Delete(ctx context.Context, in *sysin.TableDeleteInp) (err e
 func (s *sSysTable) Status(ctx context.Context, in *sysin.TableStatusInp) (err error) {
 	update := g.Map{
 		dao.AddonHgexampleTable.Columns().Status:    in.Status,
-		dao.AddonHgexampleTable.Columns().UpdatedBy: contexts.GetUserId(ctx),
+		dao.AddonHgexampleTable.Columns().UpdatedBy: contexts.GetUserId[any](ctx),
 	}
 
 	if _, err = s.Model(ctx).WherePri(in.Id).Data(update).Update(); err != nil {
@@ -197,7 +197,7 @@ func (s *sSysTable) Switch(ctx context.Context, in *sysin.TableSwitchInp) (err e
 
 	update := g.Map{
 		in.Key: in.Value,
-		dao.AddonHgexampleTable.Columns().UpdatedBy: contexts.GetUserId(ctx),
+		dao.AddonHgexampleTable.Columns().UpdatedBy: contexts.GetUserId[any](ctx),
 	}
 
 	if _, err = s.Model(ctx).Where(dao.AddonHgexampleTable.Columns().Id, in.Id).Data(update).Update(); err != nil {

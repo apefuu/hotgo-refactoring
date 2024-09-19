@@ -39,7 +39,7 @@ func init() {
 // Verify 验证权限
 func (s *sAdminRole) Verify(ctx context.Context, path, method string) bool {
 	var (
-		user = contexts.Get(ctx).User
+		user = contexts.Get[any](ctx).User
 		err  error
 	)
 
@@ -69,8 +69,8 @@ func (s *sAdminRole) List(ctx context.Context, in *adminin.RoleListInp) (res *ad
 	)
 
 	// 非超管只获取下级角色
-	if !service.AdminMember().VerifySuperId(ctx, contexts.GetUserId(ctx)) {
-		pid = contexts.GetRoleId(ctx)
+	if !service.AdminMember().VerifySuperId(ctx, contexts.GetUserId[any](ctx)) {
+		pid = contexts.GetRoleId[any](ctx)
 		mod = mod.WhereLike(dao.AdminRole.Columns().Tree, "%"+tree.GetIdLabel(pid)+"%")
 	}
 
@@ -309,7 +309,7 @@ func (s *sAdminRole) treeList(pid int64, nodes []*entity.AdminRole) (list []*adm
 
 // VerifyRoleId 验证角色ID
 func (s *sAdminRole) VerifyRoleId(ctx context.Context, id int64) (err error) {
-	mb := contexts.GetUser(ctx)
+	mb := contexts.GetUser[any](ctx)
 	if mb == nil {
 		err = gerror.New("用户信息获取失败！")
 		return

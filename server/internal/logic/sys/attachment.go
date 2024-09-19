@@ -55,7 +55,7 @@ func (s *sSysAttachment) View(ctx context.Context, in *sysin.AttachmentViewInp) 
 // List 获取附件列表
 func (s *sSysAttachment) List(ctx context.Context, in *sysin.AttachmentListInp) (list []*sysin.AttachmentListModel, totalCount int, err error) {
 	mod := s.Model(ctx)
-	memberId := contexts.GetUserId(ctx)
+	memberId := contexts.GetUserId[any](ctx)
 
 	// 超管允许查看指定用户的附件
 	if service.AdminMember().VerifySuperId(ctx, memberId) && in.MemberId > 0 {
@@ -108,7 +108,7 @@ func (s *sSysAttachment) List(ctx context.Context, in *sysin.AttachmentListInp) 
 
 // ClearKind 清空上传类型
 func (s *sSysAttachment) ClearKind(ctx context.Context, in *sysin.AttachmentClearKindInp) (err error) {
-	memberId := contexts.GetUserId(ctx)
+	memberId := contexts.GetUserId[any](ctx)
 	if _, err = s.Model(ctx).Where(dao.SysAttachment.Columns().MemberId, memberId).Where(dao.SysAttachment.Columns().Kind, in.Kind).Delete(); err != nil {
 		err = gerror.Wrap(err, "删除附件上传类型失败，请稍后重试！")
 	}

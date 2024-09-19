@@ -70,8 +70,8 @@ func (s *sAdminOrder) AcceptRefund(ctx context.Context, in *adminin.OrderAcceptR
 			// 更新余额
 			_, err = service.AdminCreditsLog().SaveBalance(ctx, &adminin.CreditsLogSaveBalanceInp{
 				MemberId:    view.MemberId,
-				AppId:       contexts.GetModule(ctx),
-				AddonsName:  contexts.GetAddonName(ctx),
+				AppId:       contexts.GetModule[any](ctx),
+				AddonsName:  contexts.GetAddonName[any](ctx),
 				CreditGroup: consts.CreditGroupBalanceRefund,
 				Num:         -view.Money,
 				MapId:       view.Id,
@@ -217,7 +217,7 @@ func (s *sAdminOrder) Create(ctx context.Context, in *adminin.OrderCreateInp) (r
 	res = new(adminin.OrderCreateModel)
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx gdb.TX) (err error) {
 		_, err = s.Model(ctx).Data(entity.AdminOrder{
-			MemberId:  contexts.GetUserId(ctx),
+			MemberId:  contexts.GetUserId[any](ctx),
 			OrderType: in.OrderType,
 			ProductId: in.ProductId,
 			OrderSn:   orderSn,
@@ -326,7 +326,7 @@ func (s *sAdminOrder) Export(ctx context.Context, in *adminin.OrderListInp) (err
 		return
 	}
 
-	err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName)
+	err = excel.ExportByStructs[any](ctx, tags, exports, fileName, sheetName)
 	return
 }
 

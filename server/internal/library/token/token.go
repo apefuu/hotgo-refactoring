@@ -90,7 +90,7 @@ func Login(ctx context.Context, user *model.Identity) (string, int64, error) {
 }
 
 // Logout 注销登录
-func Logout(r *ghttp.Request) (err error) {
+func Logout[T any](r *ghttp.Request) (err error) {
 	var (
 		ctx    = r.Context()
 		header = GetAuthorization(r)
@@ -112,9 +112,9 @@ func Logout(r *ghttp.Request) (err error) {
 		// 认证key
 		authKey = GetAuthKey(header)
 		// 登录token
-		tokenKey = GetTokenKey(contexts.GetModule(ctx), authKey)
+		tokenKey = GetTokenKey(contexts.GetModule[T](ctx), authKey)
 		// 身份绑定
-		bindKey = GetBindKey(contexts.GetModule(ctx), claims.Id)
+		bindKey = GetBindKey(contexts.GetModule[T](ctx), claims.Id)
 	)
 
 	// 删除token

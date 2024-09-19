@@ -38,7 +38,7 @@ func init() {
 // View 获取指定提现信息
 func (s *sAdminCash) View(ctx context.Context, in *adminin.CashViewInp) (res *adminin.CashViewModel, err error) {
 	// 这里做了强制限制非超管不允许访问，如果你想通过菜单权限控制，请注释掉以下验证
-	if !service.AdminMember().VerifySuperId(ctx, contexts.GetUserId(ctx)) {
+	if !service.AdminMember().VerifySuperId(ctx, contexts.GetUserId[any](ctx)) {
 		err = gerror.New("没有访问权限")
 		return
 	}
@@ -72,7 +72,7 @@ func (s *sAdminCash) View(ctx context.Context, in *adminin.CashViewInp) (res *ad
 func (s *sAdminCash) List(ctx context.Context, in *adminin.CashListInp) (list []*adminin.CashListModel, totalCount int, err error) {
 	var (
 		mod        = dao.AdminCash.Ctx(ctx)
-		opMemberId = contexts.GetUserId(ctx)
+		opMemberId = contexts.GetUserId[any](ctx)
 		isSuper    = service.AdminMember().VerifySuperId(ctx, opMemberId)
 	)
 
@@ -233,8 +233,8 @@ func (s *sAdminCash) Apply(ctx context.Context, in *adminin.CashApplyInp) (err e
 		// 更新余额
 		_, err = service.AdminCreditsLog().SaveBalance(ctx, &adminin.CreditsLogSaveBalanceInp{
 			MemberId:    in.MemberId,
-			AppId:       contexts.GetModule(ctx),
-			AddonsName:  contexts.GetAddonName(ctx),
+			AppId:       contexts.GetModule[any](ctx),
+			AddonsName:  contexts.GetAddonName[any](ctx),
 			CreditGroup: consts.CreditGroupApplyCash,
 			Num:         -in.Money,
 			MapId:       lastInsertId,
@@ -253,7 +253,7 @@ func (s *sAdminCash) Apply(ctx context.Context, in *adminin.CashApplyInp) (err e
 
 // Payment 提现打款处理
 func (s *sAdminCash) Payment(ctx context.Context, in *adminin.CashPaymentInp) (err error) {
-	if !service.AdminMember().VerifySuperId(ctx, contexts.GetUserId(ctx)) {
+	if !service.AdminMember().VerifySuperId(ctx, contexts.GetUserId[any](ctx)) {
 		err = gerror.New("没有访问权限")
 		return
 	}

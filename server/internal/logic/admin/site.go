@@ -333,6 +333,6 @@ func (s *sAdminSite) BindUserContext(ctx context.Context, claims *model.Identity
 		LoginAt:  claims.LoginAt,
 	}
 
-	contexts.SetUser(ctx, user)
+	contexts.SetUser[any](ctx, user)
 	return
 }

@@ -143,6 +143,6 @@ func (c *cSite) MobileLogin(ctx context.Context, req *common.MobileLoginReq) (re
 
 // Logout 注销登录
 func (c *cSite) Logout(ctx context.Context, _ *common.LoginLogoutReq) (res *common.LoginLogoutRes, err error) {
-	err = token.Logout(ghttp.RequestFromCtx(ctx))
+	err = token.Logout[any](ghttp.RequestFromCtx(ctx))
 	return
 }

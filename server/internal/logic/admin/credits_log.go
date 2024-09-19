@@ -245,6 +245,6 @@ func (s *sAdminCreditsLog) Export(ctx context.Context, in *adminin.CreditsLogLis
 		return
 	}
 
-	err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName)
+	err = excel.ExportByStructs[any](ctx, tags, exports, fileName, sheetName)
 	return
 }

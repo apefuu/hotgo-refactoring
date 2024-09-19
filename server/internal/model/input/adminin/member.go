@@ -287,8 +287,8 @@ func (in *MemberAddBalanceInp) Filter(ctx context.Context) (err error) {
 		in.Remark = fmt.Sprintf("扣除余额:%v", in.OtherNum)
 	}
 
-	in.AppId = contexts.GetModule(ctx)
-	in.AddonsName = contexts.GetAddonName(ctx)
+	in.AppId = contexts.GetModule[any](ctx)
+	in.AddonsName = contexts.GetAddonName[any](ctx)
 	return
 }
 
@@ -330,8 +330,8 @@ func (in *MemberAddIntegralInp) Filter(ctx context.Context) (err error) {
 		in.Remark = fmt.Sprintf("扣除积分:%v", in.OtherNum)
 	}
 
-	in.AppId = contexts.GetModule(ctx)
-	in.AddonsName = contexts.GetAddonName(ctx)
+	in.AppId = contexts.GetModule[any](ctx)
+	in.AddonsName = contexts.GetAddonName[any](ctx)
 	return
 }
 

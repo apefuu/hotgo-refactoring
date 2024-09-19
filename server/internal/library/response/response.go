@@ -22,12 +22,13 @@ func JsonExit(r *ghttp.Request, code int, message string, data ...interface{}) {
 }
 
 // RXml xml
-func RXml(r *ghttp.Request, code int, message string, data ...interface{}) {
-	responseData := interface{}(nil)
+func RXml[T any](r *ghttp.Request, code int, message string, data ...T) {
+	//responseData := interface{}(nil)
+	var responseData T
 	if len(data) > 0 {
 		responseData = data[0]
 	}
-	res := &model.Response{
+	res := &model.Response[T]{
 		Code:      code,
 		Message:   message,
 		Timestamp: gtime.Timestamp(),
@@ -52,12 +53,13 @@ func RXml(r *ghttp.Request, code int, message string, data ...interface{}) {
 }
 
 // RJson 标准返回结果数据结构封装
-func RJson(r *ghttp.Request, code int, message string, data ...interface{}) {
-	responseData := interface{}(nil)
+func RJson[T any](r *ghttp.Request, code int, message string, data ...T) {
+	//responseData := interface{}(nil)
+	var responseData T
 	if len(data) > 0 {
 		responseData = data[0]
 	}
-	res := &model.Response{
+	res := &model.Response[T]{
 		Code:      code,
 		Message:   message,
 		Timestamp: gtime.Timestamp(),
@@ -82,7 +84,7 @@ func RJson(r *ghttp.Request, code int, message string, data ...interface{}) {
 }
 
 // CustomJson 自定义JSON
-func CustomJson(r *ghttp.Request, content interface{}) {
+func CustomJson[T any](r *ghttp.Request, content T) {
 	// 清空响应
 	r.Response.ClearBuffer()
 
@@ -90,7 +92,7 @@ func CustomJson(r *ghttp.Request, content interface{}) {
 	r.Response.WriteJson(content)
 
 	// 加入到上下文
-	contexts.SetResponse(r.Context(), &model.Response{
+	contexts.SetResponse(r.Context(), &model.Response[T]{
 		Code:      0,
 		Message:   "",
 		Data:      content,

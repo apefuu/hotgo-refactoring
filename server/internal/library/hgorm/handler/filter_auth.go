@@ -19,7 +19,7 @@ import (
 
 // FilterAuth 过滤数据权限
 // 通过上下文中的用户角色权限和表中是否含有需要过滤的字段附加查询条件
-func FilterAuth(m *gdb.Model) *gdb.Model {
+func FilterAuth[T any](m *gdb.Model) *gdb.Model {
 	var (
 		needAuth    bool
 		filterField string
@@ -40,16 +40,16 @@ func FilterAuth(m *gdb.Model) *gdb.Model {
 	if !needAuth {
 		return m
 	}
-	return m.Handler(FilterAuthWithField(filterField))
+	return m.Handler(FilterAuthWithField[T](filterField))
 }
 
 // FilterAuthWithField 过滤数据权限，设置指定字段
-func FilterAuthWithField(filterField string) func(m *gdb.Model) *gdb.Model {
+func FilterAuthWithField[T any](filterField string) func(m *gdb.Model) *gdb.Model {
 	return func(m *gdb.Model) *gdb.Model {
 		var (
 			role *entity.AdminRole
 			ctx  = m.GetCtx()
-			co   = contexts.Get(ctx)
+			co   = contexts.Get[T](ctx)
 		)
 
 		if co == nil || co.User == nil {

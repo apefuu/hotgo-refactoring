@@ -46,7 +46,7 @@ func (c *cRole) Delete(ctx context.Context, req *role.DeleteReq) (res *role.Dele
 
 // Dynamic 动态路由
 func (c *cRole) Dynamic(ctx context.Context, _ *role.DynamicReq) (res *role.DynamicRes, err error) {
-	return service.AdminMenu().GetMenuList(ctx, contexts.GetUserId(ctx))
+	return service.AdminMenu().GetMenuList(ctx, contexts.GetUserId[any](ctx))
 }
 
 // GetPermissions 获取指定角色权限

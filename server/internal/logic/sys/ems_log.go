@@ -210,7 +210,7 @@ func (s *sSysEmsLog) newView(ctx context.Context, in *sysin.SendEmsInp, config *
 
 	var (
 		username string
-		user     = contexts.GetUser(ctx)
+		user     = contexts.GetUser[any](ctx)
 		request  = ghttp.RequestFromCtx(ctx)
 		ip       = location.GetClientIp(request)
 	)

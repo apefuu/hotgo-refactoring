@@ -37,7 +37,7 @@ func (in *CreditsLogSaveBalanceInp) Filter(ctx context.Context) (err error) {
 	}
 
 	if in.AppId == "" {
-		in.AppId = contexts.GetModule(ctx)
+		in.AppId = contexts.GetModule[any](ctx)
 	}
 
 	if in.CreditGroup == "" {
@@ -75,7 +75,7 @@ func (in *CreditsLogSaveIntegralInp) Filter(ctx context.Context) (err error) {
 	}
 
 	if in.AppId == "" {
-		in.AppId = contexts.GetModule(ctx)
+		in.AppId = contexts.GetModule[any](ctx)
 	}
 
 	if in.CreditGroup == "" {

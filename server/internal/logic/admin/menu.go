@@ -183,7 +183,7 @@ func (s *sAdminMenu) GetMenuList(ctx context.Context, memberId int64) (res *role
 
 	// 非超管验证允许的菜单列表
 	if !service.AdminMember().VerifySuperId(ctx, memberId) {
-		menuIds, err := dao.AdminRoleMenu.Ctx(ctx).Fields("menu_id").Where("role_id", contexts.GetRoleId(ctx)).Array()
+		menuIds, err := dao.AdminRoleMenu.Ctx(ctx).Fields("menu_id").Where("role_id", contexts.GetRoleId[any](ctx)).Array()
 		if err != nil {
 			return nil, err
 		}
@@ -242,7 +242,7 @@ func (s *sAdminMenu) LoginPermissions(ctx context.Context, memberId int64) (list
 
 	// 非超管验证允许的菜单列表
 	if !service.AdminMember().VerifySuperId(ctx, memberId) {
-		menuIds, err := dao.AdminRoleMenu.Ctx(ctx).Fields("menu_id").Where("role_id", contexts.GetRoleId(ctx)).Array()
+		menuIds, err := dao.AdminRoleMenu.Ctx(ctx).Fields("menu_id").Where("role_id", contexts.GetRoleId[any](ctx)).Array()
 		if err != nil {
 			return nil, err
 		}
