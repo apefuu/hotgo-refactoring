@@ -286,8 +286,8 @@ func (l *gCurd) generateLogicListWhereEach(buffer *bytes.Buffer, in *CurdPreview
 		case WhereModeNotLike:
 			whereTag = "\tif " + linkMode + " {\n\t\tmod = mod." + wherePrefix + "NotLike(" + tablePrefix + "dao." + daoName + ".Columns()." + columnName + ", in." + field.GoName + ")\n\t}"
 		case WhereModeJsonContains:
-			val := tablePrefix + "fmt.Sprintf(`JSON_CONTAINS(%s,'%v')`, dao." + daoName + ".Columns()." + columnName + ", in." + field.GoName + ")"
-			whereTag = "\tif in." + field.GoName + linkMode + " {\n\t\tmod = mod." + wherePrefix + "(" + val + ")\n\t}"
+			val := tablePrefix + `"JSON_CONTAINS("+dao.` + daoName + `.Columns().` + columnName + `+",?)", in.` + field.GoName
+			whereTag = "\tif " + linkMode + " {\n\t\tmod = mod." + wherePrefix + "(" + val + ")\n\t}"
 
 		default:
 			buffer.WriteString(fmt.Sprintf(LogicWhereNoSupport, field.QueryWhere))
