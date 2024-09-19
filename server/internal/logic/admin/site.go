@@ -28,12 +28,12 @@ import (
 
 type sAdminSite struct{}
 
-func NewAdminSite() *sAdminSite {
+func newAdminSite() *sAdminSite {
 	return &sAdminSite{}
 }
 
 func init() {
-	service.RegisterAdminSite(NewAdminSite())
+	service.RegisterAdminSite(newAdminSite())
 }
 
 // Register 账号注册

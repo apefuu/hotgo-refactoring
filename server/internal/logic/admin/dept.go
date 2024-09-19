@@ -26,12 +26,12 @@ import (
 
 type sAdminDept struct{}
 
-func NewAdminDept() *sAdminDept {
+func newAdminDept() *sAdminDept {
 	return &sAdminDept{}
 }
 
 func init() {
-	service.RegisterAdminDept(NewAdminDept())
+	service.RegisterAdminDept(newAdminDept())
 }
 
 // Model 部门ORM模型

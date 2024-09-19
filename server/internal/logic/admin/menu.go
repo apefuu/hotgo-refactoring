@@ -29,12 +29,12 @@ import (
 
 type sAdminMenu struct{}
 
-func NewAdminMenu() *sAdminMenu {
+func newAdminMenu() *sAdminMenu {
 	return &sAdminMenu{}
 }
 
 func init() {
-	service.RegisterAdminMenu(NewAdminMenu())
+	service.RegisterAdminMenu(newAdminMenu())
 }
 
 // Model Orm模型

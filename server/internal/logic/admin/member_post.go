@@ -15,12 +15,12 @@ import (
 
 type sAdminMemberPost struct{}
 
-func NewAdminMemberPost() *sAdminMemberPost {
+func newAdminMemberPost() *sAdminMemberPost {
 	return &sAdminMemberPost{}
 }
 
 func init() {
-	service.RegisterAdminMemberPost(NewAdminMemberPost())
+	service.RegisterAdminMemberPost(newAdminMemberPost())
 }
 
 // UpdatePostIds 更新用户岗位

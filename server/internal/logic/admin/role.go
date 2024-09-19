@@ -28,12 +28,12 @@ import (
 
 type sAdminRole struct{}
 
-func NewAdminRole() *sAdminRole {
+func newAdminRole() *sAdminRole {
 	return &sAdminRole{}
 }
 
 func init() {
-	service.RegisterAdminRole(NewAdminRole())
+	service.RegisterAdminRole(newAdminRole())
 }
 
 // Verify 验证权限

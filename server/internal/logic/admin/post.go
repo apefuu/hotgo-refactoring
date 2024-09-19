@@ -22,12 +22,12 @@ import (
 
 type sAdminPost struct{}
 
-func NewAdminPost() *sAdminPost {
+func newAdminPost() *sAdminPost {
 	return &sAdminPost{}
 }
 
 func init() {
-	service.RegisterAdminPost(NewAdminPost())
+	service.RegisterAdminPost(newAdminPost())
 	dict.RegisterFunc("adminPostOption", "岗位选项", service.AdminPost().Option)
 }
 

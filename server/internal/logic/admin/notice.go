@@ -27,12 +27,12 @@ import (
 
 type sAdminNotice struct{}
 
-func NewAdminNotice() *sAdminNotice {
+func newAdminNotice() *sAdminNotice {
 	return &sAdminNotice{}
 }
 
 func init() {
-	service.RegisterAdminNotice(NewAdminNotice())
+	service.RegisterAdminNotice(newAdminNotice())
 }
 
 // Model Orm模型

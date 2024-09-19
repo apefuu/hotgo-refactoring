@@ -27,12 +27,12 @@ import (
 
 type sAdminCash struct{}
 
-func NewAdminCash() *sAdminCash {
+func newAdminCash() *sAdminCash {
 	return &sAdminCash{}
 }
 
 func init() {
-	service.RegisterAdminCash(NewAdminCash())
+	service.RegisterAdminCash(newAdminCash())
 }
 
 // View 获取指定提现信息

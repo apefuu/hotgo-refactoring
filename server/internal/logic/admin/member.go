@@ -44,14 +44,14 @@ type sAdminMember struct {
 	superAdmin *SuperAdmin
 }
 
-func NewAdminMember() *sAdminMember {
+func newAdminMember() *sAdminMember {
 	return &sAdminMember{
 		superAdmin: new(SuperAdmin),
 	}
 }
 
 func init() {
-	service.RegisterAdminMember(NewAdminMember())
+	service.RegisterAdminMember(newAdminMember())
 }
 
 // AddBalance 增加余额

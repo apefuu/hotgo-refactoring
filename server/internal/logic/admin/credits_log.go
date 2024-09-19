@@ -29,12 +29,12 @@ import (
 
 type sAdminCreditsLog struct{}
 
-func NewAdminCreditsLog() *sAdminCreditsLog {
+func newAdminCreditsLog() *sAdminCreditsLog {
 	return &sAdminCreditsLog{}
 }
 
 func init() {
-	service.RegisterAdminCreditsLog(NewAdminCreditsLog())
+	service.RegisterAdminCreditsLog(newAdminCreditsLog())
 }
 
 // Model 资产变动ORM模型

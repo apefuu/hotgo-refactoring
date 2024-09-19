@@ -34,12 +34,12 @@ import (
 
 type sAdminOrder struct{}
 
-func NewAdminOrder() *sAdminOrder {
+func newAdminOrder() *sAdminOrder {
 	return &sAdminOrder{}
 }
 
 func init() {
-	service.RegisterAdminOrder(NewAdminOrder())
+	service.RegisterAdminOrder(newAdminOrder())
 }
 
 // Model 充值订单ORM模型

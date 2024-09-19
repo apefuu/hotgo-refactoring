@@ -26,14 +26,14 @@ type sAdminMonitor struct {
 	sync.RWMutex
 }
 
-func NewAdminMonitor() *sAdminMonitor {
+func newAdminMonitor() *sAdminMonitor {
 	return &sAdminMonitor{
 		data: new(model.MonitorData),
 	}
 }
 
 func init() {
-	service.RegisterAdminMonitor(NewAdminMonitor())
+	service.RegisterAdminMonitor(newAdminMonitor())
 }
 
 // StartMonitor 启动服务监控
