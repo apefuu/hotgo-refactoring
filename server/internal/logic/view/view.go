@@ -83,7 +83,7 @@ func (s *sView) RenderTpl(ctx context.Context, tpl string, data ...model.View) {
 	viewData["BuildIn"] = &viewBuildIn{httpRequest: request}
 
 	// 插件模板，兼容从资源文件中读取
-	if addonName := contexts.GetAddonName(ctx); len(addonName) > 0 {
+	if addonName := contexts.GetAddonName[any](ctx); len(addonName) > 0 {
 		basePath := addons.GetResourcePath(ctx)
 		if len(basePath) > 0 && !gstr.Contains(tpl, basePath) {
 			path := addons.ViewPath(addonName, basePath)

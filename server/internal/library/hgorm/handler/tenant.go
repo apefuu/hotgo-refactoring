@@ -14,7 +14,7 @@ import (
 
 // FilterTenant 过滤多租户数据权限
 // 根据部门类型识别当前租户、商户、用户身份，过滤只属于自己的数据
-func FilterTenant(m *gdb.Model) *gdb.Model {
+func FilterTenant[T any](m *gdb.Model) *gdb.Model {
 	var (
 		needAuth    bool
 		filterField string
@@ -23,19 +23,19 @@ func FilterTenant(m *gdb.Model) *gdb.Model {
 	)
 
 	// 租户
-	if contexts.IsTenantDept(ctx) && gstr.InArray(fields, "tenant_id") {
+	if contexts.IsTenantDept[T](ctx) && gstr.InArray(fields, "tenant_id") {
 		needAuth = true
 		filterField = "tenant_id"
 	}
 
 	// 商户
-	if contexts.IsMerchantDept(ctx) && gstr.InArray(fields, "merchant_id") {
+	if contexts.IsMerchantDept[T](ctx) && gstr.InArray(fields, "merchant_id") {
 		needAuth = true
 		filterField = "merchant_id"
 	}
 
 	// 用户
-	if contexts.IsUserDept(ctx) && gstr.InArray(fields, "user_id") {
+	if contexts.IsUserDept[T](ctx) && gstr.InArray(fields, "user_id") {
 		needAuth = true
 		filterField = "user_id"
 	}
@@ -44,6 +44,6 @@ func FilterTenant(m *gdb.Model) *gdb.Model {
 		return m
 	}
 
-	m = m.Where(filterField, contexts.GetUserId(ctx))
+	m = m.Where(filterField, contexts.GetUserId[T](ctx))
 	return m
 }

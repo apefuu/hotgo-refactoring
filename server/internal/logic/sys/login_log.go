@@ -115,7 +115,7 @@ func (s *sSysLoginLog) Export(ctx context.Context, in *sysin.LoginLogListInp) (e
 		return
 	}
 
-	err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName)
+	err = excel.ExportByStructs[any](ctx, tags, exports, fileName, sheetName)
 	return
 }
 

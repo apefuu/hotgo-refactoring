@@ -65,5 +65,31 @@ Error: connect ECONNREFUSED ::1:8000
 - 服务端没有启动
 - `.\wen\.env.development`中的`VITE_PROXY`配置的服务器地址或端口与实际不一致
 
+### 四、Debug相关
+
+如果Debug不能正常运行，请手动更换Goland调试工具路径
+
+首先安装GO最新调试工具（注意是master分支）
+```shell
+go install github.com/go-delve/delve/cmd/dlv@master
+```
+或
+```shell
+git clone https://github.com/go-delve/delve
+cd delve
+go install github.com/go-delve/delve/cmd/dlv
+```
+依次打开Goland对应配置
+```text
+Toolbar->Help->Edit Customer Properties
+```
+```properties
+dlv.path=/${your path}/go/bin/dlv
+```
+重启Goland
+
+- 服务端没有启动
+- `.\wen\.env.development`中的`VITE_PROXY`配置的服务器地址或端口与实际不一致
+
 
 

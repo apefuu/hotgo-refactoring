@@ -88,7 +88,7 @@ func (s *sSysServeLog) List(ctx context.Context, in *sysin.ServeLogListInp) (lis
 		return
 	}
 
-	err = mod.Fields(fields).Handler(handler.FilterAuth).Page(in.Page, in.PerPage).OrderDesc(dao.SysServeLog.Columns().Id).Scan(&list)
+	err = mod.Fields(fields).Handler(handler.FilterAuth[any]).Page(in.Page, in.PerPage).OrderDesc(dao.SysServeLog.Columns().Id).Scan(&list)
 	return
 }
 
@@ -115,7 +115,7 @@ func (s *sSysServeLog) Export(ctx context.Context, in *sysin.ServeLogListInp) (e
 		return err
 	}
 
-	err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName)
+	err = excel.ExportByStructs[any](ctx, tags, exports, fileName, sheetName)
 	return
 }
 

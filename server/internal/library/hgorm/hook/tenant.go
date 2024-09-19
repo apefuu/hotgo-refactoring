@@ -165,7 +165,7 @@ func (h *hookSaveTenant) checkRelationSingle(idx any, relation, limitType string
 		return
 	}
 
-	relationId := contexts.GetUserId(h.ctx)
+	relationId := contexts.GetUserId[any](h.ctx)
 	switch relation {
 	case consts.DeptTypeTenant:
 		if ok = tr.TenantId == relationId; !ok {
@@ -210,8 +210,8 @@ func (h *hookSaveTenant) handle() (result sql.Result, err error) {
 	var (
 		update   = make(g.Map)
 		fields   = h.getFields()
-		memberId = contexts.GetUserId(h.ctx)
-		deptType = contexts.GetDeptType(h.ctx)
+		memberId = contexts.GetUserId[any](h.ctx)
+		deptType = contexts.GetDeptType[any](h.ctx)
 		tr       *hgorm.TenantRelation
 	)
 
@@ -221,7 +221,7 @@ func (h *hookSaveTenant) handle() (result sql.Result, err error) {
 	}
 
 	// 非公司类型，加载自己的租户关系，用于重写关系
-	if !contexts.IsCompanyDept(h.ctx) {
+	if !contexts.IsCompanyDept[any](h.ctx) {
 		tr, err = h.getRelation(memberId)
 		if err != nil {
 			return nil, err

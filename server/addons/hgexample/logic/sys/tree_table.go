@@ -118,13 +118,13 @@ func (s *sSysTreeTable) Edit(ctx context.Context, in *sysin.TableEditInp) (err e
 		}
 
 		if in.Id > 0 {
-			in.UpdatedBy = contexts.GetUserId(ctx)
+			in.UpdatedBy = contexts.GetUserId[any](ctx)
 			if _, err = s.Model(ctx).WherePri(in.Id).Data(in).Update(); err != nil {
 				err = gerror.Wrap(err, "修改表格失败，请稍后重试！")
 				return err
 			}
 		} else {
-			in.CreatedBy = contexts.GetUserId(ctx)
+			in.CreatedBy = contexts.GetUserId[any](ctx)
 			if _, err = s.Model(ctx, &handler.Option{FilterAuth: false}).Data(in).OmitEmptyData().Insert(); err != nil {
 				err = gerror.Wrap(err, "新增表格失败，请稍后重试！")
 				return err

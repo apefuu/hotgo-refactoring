@@ -35,7 +35,7 @@ func Stop() {
 }
 
 // WsPage ws入口
-func WsPage(r *ghttp.Request) {
+func WsPage[T any](r *ghttp.Request) {
 	upGrader := websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
@@ -48,7 +48,7 @@ func WsPage(r *ghttp.Request) {
 		return
 	}
 	currentTime := uint64(gtime.Now().Unix())
-	client := NewClient(r, conn, currentTime)
+	client := NewClient[T](r, conn, currentTime)
 	go client.read()
 	go client.write()
 	// 用户连接事件

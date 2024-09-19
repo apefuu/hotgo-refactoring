@@ -44,7 +44,7 @@ func (c *cEms) SendTest(ctx context.Context, req *common.SendTestEmailReq) (res 
 // SendBindEms 发送换绑邮件
 func (c *cEms) SendBindEms(ctx context.Context, _ *common.SendBindEmsReq) (res *common.SendBindEmsRes, err error) {
 	var (
-		memberId = contexts.GetUserId(ctx)
+		memberId = contexts.GetUserId[any](ctx)
 		models   *entity.AdminMember
 	)
 

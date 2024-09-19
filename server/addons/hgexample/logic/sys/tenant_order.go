@@ -126,7 +126,7 @@ func (s *sSysTenantOrder) Export(ctx context.Context, in *sysin.TenantOrderListI
 		return
 	}
 
-	err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName)
+	err = excel.ExportByStructs[any](ctx, tags, exports, fileName, sheetName)
 	return
 }
 

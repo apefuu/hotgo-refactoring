@@ -55,7 +55,7 @@ func (d *LocalDrive) Upload(ctx context.Context, file *ghttp.UploadFile) (fullPa
 // CreateMultipart 创建分片事件
 func (d *LocalDrive) CreateMultipart(ctx context.Context, in *CheckMultipartParams) (mp *MultipartProgress, err error) {
 	mp = new(MultipartProgress)
-	mp.UploadId = GenUploadId(ctx, in.Md5)
+	mp.UploadId = GenUploadId[any](ctx, in.Md5)
 	mp.Meta = in.meta
 	mp.ShardCount = in.ShardCount
 	mp.UploadedIndex = make([]int, 0)
@@ -119,7 +119,7 @@ func (d *LocalDrive) UploadPart(ctx context.Context, in *UploadPartParams) (res 
 		}
 
 		// 写入附件记录
-		attachment, err := write(ctx, in.mp.Meta, finalDirPath)
+		attachment, err := write[any](ctx, in.mp.Meta, finalDirPath)
 		if err != nil {
 			return nil, err
 		}

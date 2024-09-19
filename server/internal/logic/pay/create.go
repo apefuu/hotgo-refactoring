@@ -69,9 +69,9 @@ func (s *sPay) Create(ctx context.Context, in payin.PayCreateInp) (res *payin.Pa
 	}
 
 	data := &entity.PayLog{
-		MemberId:      contexts.GetUserId(ctx),
-		AppId:         contexts.GetModule(ctx),
-		AddonsName:    contexts.GetAddonName(ctx),
+		MemberId:      contexts.GetUserId[any](ctx),
+		AppId:         contexts.GetModule[any](ctx),
+		AddonsName:    contexts.GetAddonName[any](ctx),
 		OrderSn:       in.OrderSn,
 		OrderGroup:    in.OrderGroup,
 		Openid:        in.Openid,

@@ -29,12 +29,12 @@ import (
 
 type sAdminCreditsLog struct{}
 
-func NewAdminCreditsLog() *sAdminCreditsLog {
+func newAdminCreditsLog() *sAdminCreditsLog {
 	return &sAdminCreditsLog{}
 }
 
 func init() {
-	service.RegisterAdminCreditsLog(NewAdminCreditsLog())
+	service.RegisterAdminCreditsLog(newAdminCreditsLog())
 }
 
 // Model 资产变动ORM模型
@@ -245,6 +245,6 @@ func (s *sAdminCreditsLog) Export(ctx context.Context, in *adminin.CreditsLogLis
 		return
 	}
 
-	err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName)
+	err = excel.ExportByStructs[any](ctx, tags, exports, fileName, sheetName)
 	return
 }

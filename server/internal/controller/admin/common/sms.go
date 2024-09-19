@@ -30,7 +30,7 @@ func (c *cSms) SendTest(ctx context.Context, req *common.SendTestSmsReq) (res *c
 // SendBindSms 发送换绑短信
 func (c *cSms) SendBindSms(ctx context.Context, _ *common.SendBindSmsReq) (res *common.SendBindSmsRes, err error) {
 	var (
-		memberId = contexts.GetUserId(ctx)
+		memberId = contexts.GetUserId[any](ctx)
 		models   *entity.AdminMember
 	)
 

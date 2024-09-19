@@ -28,12 +28,12 @@ import (
 
 type sAdminSite struct{}
 
-func NewAdminSite() *sAdminSite {
+func newAdminSite() *sAdminSite {
 	return &sAdminSite{}
 }
 
 func init() {
-	service.RegisterAdminSite(NewAdminSite())
+	service.RegisterAdminSite(newAdminSite())
 }
 
 // Register 账号注册
@@ -333,6 +333,6 @@ func (s *sAdminSite) BindUserContext(ctx context.Context, claims *model.Identity
 		LoginAt:  claims.LoginAt,
 	}
 
-	contexts.SetUser(ctx, user)
+	contexts.SetUser[any](ctx, user)
 	return
 }

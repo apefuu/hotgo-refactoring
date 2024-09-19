@@ -44,21 +44,21 @@ type sAdminMember struct {
 	superAdmin *SuperAdmin
 }
 
-func NewAdminMember() *sAdminMember {
+func newAdminMember() *sAdminMember {
 	return &sAdminMember{
 		superAdmin: new(SuperAdmin),
 	}
 }
 
 func init() {
-	service.RegisterAdminMember(NewAdminMember())
+	service.RegisterAdminMember(newAdminMember())
 }
 
 // AddBalance 增加余额
 func (s *sAdminMember) AddBalance(ctx context.Context, in *adminin.MemberAddBalanceInp) (err error) {
 	var (
 		mb       *entity.AdminMember
-		memberId = contexts.GetUserId(ctx)
+		memberId = contexts.GetUserId[any](ctx)
 	)
 
 	if err = s.FilterAuthModel(ctx, memberId).WherePri(in.Id).Scan(&mb); err != nil {
@@ -102,7 +102,7 @@ func (s *sAdminMember) AddBalance(ctx context.Context, in *adminin.MemberAddBala
 func (s *sAdminMember) AddIntegral(ctx context.Context, in *adminin.MemberAddIntegralInp) (err error) {
 	var (
 		mb       *entity.AdminMember
-		memberId = contexts.GetUserId(ctx)
+		memberId = contexts.GetUserId[any](ctx)
 	)
 
 	if err = s.FilterAuthModel(ctx, memberId).WherePri(in.Id).Scan(&mb); err != nil {
@@ -144,7 +144,7 @@ func (s *sAdminMember) AddIntegral(ctx context.Context, in *adminin.MemberAddInt
 
 // UpdateCash 修改提现信息
 func (s *sAdminMember) UpdateCash(ctx context.Context, in *adminin.MemberUpdateCashInp) (err error) {
-	memberId := contexts.Get(ctx).User.Id
+	memberId := contexts.Get[any](ctx).User.Id
 	if memberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return
@@ -180,7 +180,7 @@ func (s *sAdminMember) UpdateCash(ctx context.Context, in *adminin.MemberUpdateC
 
 // UpdateEmail 换绑邮箱
 func (s *sAdminMember) UpdateEmail(ctx context.Context, in *adminin.MemberUpdateEmailInp) (err error) {
-	memberId := contexts.Get(ctx).User.Id
+	memberId := contexts.Get[any](ctx).User.Id
 	if memberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return
@@ -232,7 +232,7 @@ func (s *sAdminMember) UpdateEmail(ctx context.Context, in *adminin.MemberUpdate
 
 // UpdateMobile 换绑手机号
 func (s *sAdminMember) UpdateMobile(ctx context.Context, in *adminin.MemberUpdateMobileInp) (err error) {
-	memberId := contexts.Get(ctx).User.Id
+	memberId := contexts.Get[any](ctx).User.Id
 	if memberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return
@@ -284,7 +284,7 @@ func (s *sAdminMember) UpdateMobile(ctx context.Context, in *adminin.MemberUpdat
 
 // UpdateProfile 更新用户资料
 func (s *sAdminMember) UpdateProfile(ctx context.Context, in *adminin.MemberUpdateProfileInp) (err error) {
-	memberId := contexts.Get(ctx).User.Id
+	memberId := contexts.Get[any](ctx).User.Id
 	if memberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return
@@ -347,7 +347,7 @@ func (s *sAdminMember) UpdatePwd(ctx context.Context, in *adminin.MemberUpdatePw
 func (s *sAdminMember) ResetPwd(ctx context.Context, in *adminin.MemberResetPwdInp) (err error) {
 	var (
 		mb       *entity.AdminMember
-		memberId = contexts.GetUserId(ctx)
+		memberId = contexts.GetUserId[any](ctx)
 	)
 
 	if err = s.FilterAuthModel(ctx, memberId).WherePri(in.Id).Scan(&mb); err != nil {
@@ -403,7 +403,7 @@ func (s *sAdminMember) VerifyUnique(ctx context.Context, in *adminin.VerifyUniqu
 
 // Delete 删除用户
 func (s *sAdminMember) Delete(ctx context.Context, in *adminin.MemberDeleteInp) (err error) {
-	memberId := contexts.GetUserId(ctx)
+	memberId := contexts.GetUserId[any](ctx)
 	if memberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return
@@ -454,7 +454,7 @@ func (s *sAdminMember) Delete(ctx context.Context, in *adminin.MemberDeleteInp) 
 
 // Edit 修改/新增用户
 func (s *sAdminMember) Edit(ctx context.Context, in *adminin.MemberEditInp) (err error) {
-	opMemberId := contexts.GetUserId(ctx)
+	opMemberId := contexts.GetUserId[any](ctx)
 	if opMemberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return
@@ -582,7 +582,7 @@ func (s *sAdminMember) Edit(ctx context.Context, in *adminin.MemberEditInp) (err
 
 // View 获取用户信息
 func (s *sAdminMember) View(ctx context.Context, in *adminin.MemberViewInp) (res *adminin.MemberViewModel, err error) {
-	if err = s.FilterAuthModel(ctx, contexts.GetUserId(ctx)).Hook(hook.MemberInfo).WherePri(in.Id).Scan(&res); err != nil {
+	if err = s.FilterAuthModel(ctx, contexts.GetUserId[any](ctx)).Hook(hook.MemberInfo).WherePri(in.Id).Scan(&res); err != nil {
 		err = gerror.Wrap(err, "获取用户信息失败，请稍后重试！")
 	}
 	return
@@ -590,7 +590,7 @@ func (s *sAdminMember) View(ctx context.Context, in *adminin.MemberViewInp) (res
 
 // List 获取用户列表
 func (s *sAdminMember) List(ctx context.Context, in *adminin.MemberListInp) (list []*adminin.MemberListModel, totalCount int, err error) {
-	mod := s.FilterAuthModel(ctx, contexts.GetUserId(ctx))
+	mod := s.FilterAuthModel(ctx, contexts.GetUserId[any](ctx))
 	cols := dao.AdminMember.Columns()
 
 	if in.RealName != "" {
@@ -652,7 +652,7 @@ func (s *sAdminMember) Status(ctx context.Context, in *adminin.MemberStatusInp) 
 		return
 	}
 
-	if _, err = s.FilterAuthModel(ctx, contexts.GetUserId(ctx)).WherePri(in.Id).Data(dao.AdminMember.Columns().Status, in.Status).Update(); err != nil {
+	if _, err = s.FilterAuthModel(ctx, contexts.GetUserId[any](ctx)).WherePri(in.Id).Data(dao.AdminMember.Columns().Status, in.Status).Update(); err != nil {
 		err = gerror.Wrap(err, "更新用户状态失败，请稍后重试！")
 	}
 	return
@@ -677,7 +677,7 @@ func (s *sAdminMember) GenTree(ctx context.Context, pid int64) (level int, newTr
 
 // LoginMemberInfo 获取登录用户信息
 func (s *sAdminMember) LoginMemberInfo(ctx context.Context) (res *adminin.LoginMemberInfoModel, err error) {
-	var memberId = contexts.GetUserId(ctx)
+	var memberId = contexts.GetUserId[any](ctx)
 	if memberId <= 0 {
 		err = gerror.New("用户身份异常，请重新登录！")
 		return
@@ -710,7 +710,7 @@ func (s *sAdminMember) LoginMemberInfo(ctx context.Context) (res *adminin.LoginM
 	res.Mobile = gstr.HideStr(res.Mobile, 40, `*`)
 	res.Email = gstr.HideStr(res.Email, 40, `*`)
 	res.OpenId, _ = service.CommonWechat().GetOpenId(ctx)
-	res.DeptType = contexts.GetDeptType(ctx)
+	res.DeptType = contexts.GetDeptType[any](ctx)
 	return
 }
 
@@ -756,7 +756,7 @@ func (s *sAdminMember) GetIdByCode(ctx context.Context, in *adminin.GetIdByCodeI
 // Select 获取可选的用户选项
 func (s *sAdminMember) Select(ctx context.Context, in *adminin.MemberSelectInp) (res []*adminin.MemberSelectModel, err error) {
 	err = dao.AdminMember.Ctx(ctx).Fields("id as value,real_name as label,username,avatar").
-		Handler(handler.FilterAuthWithField("id")).
+		Handler(handler.FilterAuthWithField[any]("id")).
 		Scan(&res)
 	if err != nil {
 		err = gerror.Wrap(err, "获取可选用户选项失败，请稍后重试！")
@@ -837,9 +837,9 @@ func (s *sAdminMember) FilterAuthModel(ctx context.Context, memberId int64) *gdb
 	}
 
 	var roleId int64
-	if contexts.GetUserId(ctx) == memberId {
+	if contexts.GetUserId[any](ctx) == memberId {
 		// 当前登录用户直接从上下文中取角色ID
-		roleId = contexts.GetRoleId(ctx)
+		roleId = contexts.GetRoleId[any](ctx)
 	} else {
 		ro, err := dao.AdminMember.Ctx(ctx).Fields("role_id").Where("id", memberId).Value()
 		if err != nil {
@@ -854,5 +854,5 @@ func (s *sAdminMember) FilterAuthModel(ctx context.Context, memberId int64) *gdb
 		g.Log().Panicf(ctx, "get the subordinate role permission exception, err:%+v", err)
 		return nil
 	}
-	return m.Where("id <> ?", memberId).WhereIn("role_id", roleIds).Handler(handler.FilterAuthWithField("id"))
+	return m.Where("id <> ?", memberId).WhereIn("role_id", roleIds).Handler(handler.FilterAuthWithField[any]("id"))
 }

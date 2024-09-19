@@ -30,7 +30,7 @@ var (
 )
 
 // ExportByStructs 导出切片结构体到excel表格
-func ExportByStructs(ctx context.Context, tags []string, list interface{}, fileName string, sheetName string) (err error) {
+func ExportByStructs[T any](ctx context.Context, tags []string, list interface{}, fileName string, sheetName string) (err error) {
 	f := excelize.NewFile()
 	f.SetSheetName("Sheet1", sheetName)
 	_ = f.SetRowHeight("Sheet1", 1, 30)
@@ -94,7 +94,7 @@ func ExportByStructs(ctx context.Context, tags []string, list interface{}, fileN
 	}
 
 	// 加入到上下文
-	contexts.SetResponse(ctx, &model.Response{
+	contexts.SetResponse(ctx, &model.Response[T]{
 		Code:      gcode.CodeOK.Code(),
 		Message:   "export successfully!",
 		Timestamp: time.Now().Unix(),

@@ -1,6 +1,6 @@
 module hotgo
 
-go 1.23.0
+go 1.23.1
 
 require (
 	github.com/IBM/sarama v1.43.3
@@ -14,10 +14,10 @@ require (
 	github.com/forgoer/openssl v1.6.0
 	github.com/go-pay/crypto v0.0.1
 	github.com/go-pay/gopay v1.5.104
-	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.7.2
-	github.com/gogf/gf/contrib/nosql/redis/v2 v2.7.2
-	github.com/gogf/gf/contrib/trace/jaeger/v2 v2.7.2
-	github.com/gogf/gf/v2 v2.7.2
+	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.7.3
+	github.com/gogf/gf/contrib/nosql/redis/v2 v2.7.3
+	github.com/gogf/gf/contrib/trace/jaeger/v2 v2.7.3
+	github.com/gogf/gf/v2 v2.7.3
 	github.com/gogf/selfupdate v0.0.0-20231215043001-5c48c528462f
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/gorilla/websocket v1.5.3

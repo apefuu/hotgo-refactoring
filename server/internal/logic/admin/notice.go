@@ -27,12 +27,12 @@ import (
 
 type sAdminNotice struct{}
 
-func NewAdminNotice() *sAdminNotice {
+func newAdminNotice() *sAdminNotice {
 	return &sAdminNotice{}
 }
 
 func init() {
-	service.RegisterAdminNotice(NewAdminNotice())
+	service.RegisterAdminNotice(newAdminNotice())
 }
 
 // Model Orm模型
@@ -48,7 +48,7 @@ func (s *sAdminNotice) Delete(ctx context.Context, in *adminin.NoticeDeleteInp) 
 
 // Edit 修改/新增
 func (s *sAdminNotice) Edit(ctx context.Context, in *adminin.NoticeEditInp) (err error) {
-	var member = contexts.Get(ctx).User
+	var member = contexts.Get[any](ctx).User
 	if member == nil {
 		err = gerror.New("获取用户信息失败！")
 		return
@@ -66,7 +66,7 @@ func (s *sAdminNotice) Edit(ctx context.Context, in *adminin.NoticeEditInp) (err
 
 	// 检查选项接收人是否合法
 	if in.Type == consts.NoticeTypeLetter {
-		count, _ := dao.AdminMember.Ctx(ctx).Handler(handler.FilterAuthWithField("id")).WhereIn("id", in.Receiver).Count()
+		count, _ := dao.AdminMember.Ctx(ctx).Handler(handler.FilterAuthWithField[any]("id")).WhereIn("id", in.Receiver).Count()
 		if count != len(in.Receiver) {
 			err = gerror.New("接收人不合法")
 			return
@@ -159,7 +159,7 @@ func (s *sAdminNotice) View(ctx context.Context, in *adminin.NoticeViewInp) (res
 
 // List 获取列表
 func (s *sAdminNotice) List(ctx context.Context, in *adminin.NoticeListInp) (list []*adminin.NoticeListModel, totalCount int, err error) {
-	var memberId = contexts.GetUserId(ctx)
+	var memberId = contexts.GetUserId[any](ctx)
 	if memberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return
@@ -224,7 +224,7 @@ func (s *sAdminNotice) List(ctx context.Context, in *adminin.NoticeListInp) (lis
 
 // PullMessages 拉取未读消息列表
 func (s *sAdminNotice) PullMessages(ctx context.Context, in *adminin.PullMessagesInp) (res *adminin.PullMessagesModel, err error) {
-	var memberId = contexts.GetUserId(ctx)
+	var memberId = contexts.GetUserId[any](ctx)
 	if memberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return
@@ -269,7 +269,7 @@ func (s *sAdminNotice) PullMessages(ctx context.Context, in *adminin.PullMessage
 // UnreadCount 获取所有类型消息的未读数量
 func (s *sAdminNotice) UnreadCount(ctx context.Context, in *adminin.NoticeUnreadCountInp) (res *adminin.NoticeUnreadCountModel, err error) {
 	if in.MemberId <= 0 {
-		if in.MemberId = contexts.GetUserId(ctx); in.MemberId <= 0 {
+		if in.MemberId = contexts.GetUserId[any](ctx); in.MemberId <= 0 {
 			err = gerror.New("获取用户信息失败！")
 			return
 		}
@@ -340,7 +340,7 @@ func (s *sAdminNotice) messageIds(ctx context.Context, memberId int64) (ids []in
 func (s *sAdminNotice) UpRead(ctx context.Context, in *adminin.NoticeUpReadInp) (err error) {
 	var (
 		data     *entity.AdminNotice
-		memberId = contexts.GetUserId(ctx)
+		memberId = contexts.GetUserId[any](ctx)
 	)
 
 	if memberId <= 0 {
@@ -361,7 +361,7 @@ func (s *sAdminNotice) UpRead(ctx context.Context, in *adminin.NoticeUpReadInp) 
 
 // ReadAll 已读全部
 func (s *sAdminNotice) ReadAll(ctx context.Context, in *adminin.NoticeReadAllInp) (err error) {
-	var memberId = contexts.GetUserId(ctx)
+	var memberId = contexts.GetUserId[any](ctx)
 	if memberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return
@@ -435,7 +435,7 @@ func (s *sAdminNotice) updatedReadClicks(ctx context.Context, noticeId, memberId
 
 // MessageList 我的消息列表
 func (s *sAdminNotice) MessageList(ctx context.Context, in *adminin.NoticeMessageListInp) (list []*adminin.NoticeMessageListModel, totalCount int, err error) {
-	var memberId = contexts.GetUserId(ctx)
+	var memberId = contexts.GetUserId[any](ctx)
 	if memberId <= 0 {
 		err = gerror.New("获取用户信息失败！")
 		return

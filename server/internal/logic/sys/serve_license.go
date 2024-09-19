@@ -123,7 +123,7 @@ func (s *sSysServeLicense) Export(ctx context.Context, in *sysin.ServeLicenseLis
 		return
 	}
 
-	err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName)
+	err = excel.ExportByStructs[any](ctx, tags, exports, fileName, sheetName)
 	return
 }
 

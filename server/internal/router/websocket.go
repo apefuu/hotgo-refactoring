@@ -29,7 +29,7 @@ func WebSocket(ctx context.Context, group *ghttp.RouterGroup) {
 		group.Middleware(service.Middleware().WebSocketAuth)
 
 		// ws
-		group.GET("/", websocket.WsPage)
+		group.GET("/", websocket.WsPage[any])
 	})
 
 	// 启动websocket监听

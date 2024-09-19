@@ -73,7 +73,7 @@ func (s *sMiddleware) Ctx(r *ghttp.Request) {
 		data["request.body"] = gjson.New(r.GetBodyString())
 	}
 
-	contexts.Init(r, &model.Context{
+	contexts.Init(r, &model.Context[any]{
 		Data:   data,
 		Module: getModule(r.URL.Path),
 	})
@@ -129,13 +129,13 @@ func (s *sMiddleware) DemoLimit(r *ghttp.Request) {
 func (s *sMiddleware) Addon(r *ghttp.Request) {
 	var ctx = r.Context()
 
-	if contexts.Get(ctx).Module == "" {
+	if contexts.Get[any](ctx).Module == "" {
 		g.Log().Warning(ctx, "application module is not initialized.")
 		return
 	}
 
 	// 替换掉应用模块前缀
-	path := gstr.Replace(r.URL.Path, "/"+contexts.Get(ctx).Module+"/", "", 1)
+	path := gstr.Replace(r.URL.Path, "/"+contexts.Get[any](ctx).Module+"/", "", 1)
 	ss := gstr.Explode("/", path)
 	if len(ss) == 0 {
 		g.Log().Warning(ctx, "addon was not recognized.")
@@ -154,7 +154,7 @@ func (s *sMiddleware) Addon(r *ghttp.Request) {
 		return
 	}
 
-	contexts.SetAddonName(ctx, sk.Name)
+	contexts.SetAddonName[any](ctx, sk.Name)
 	r.Middleware.Next()
 }
 
@@ -171,7 +171,7 @@ func (s *sMiddleware) DeliverUserContext(r *ghttp.Request) (err error) {
 			return
 		}
 	default:
-		contexts.SetUser(r.Context(), user)
+		contexts.SetUser[any](r.Context(), user)
 	}
 	return
 }

@@ -55,7 +55,7 @@ type Client struct {
 }
 
 // NewClient 初始化
-func NewClient(r *ghttp.Request, socket *websocket.Conn, firstTime uint64) (client *Client) {
+func NewClient[T any](r *ghttp.Request, socket *websocket.Conn, firstTime uint64) (client *Client) {
 	client = &Client{
 		Addr:          socket.RemoteAddr().String(),
 		ID:            guid.S(),
@@ -65,7 +65,7 @@ func NewClient(r *ghttp.Request, socket *websocket.Conn, firstTime uint64) (clie
 		closeSignal:   make(chan struct{}, 1),
 		FirstTime:     firstTime,
 		HeartbeatTime: firstTime,
-		User:          contexts.GetUser(r.Context()),
+		User:          contexts.GetUser[T](r.Context()),
 		IP:            location.GetClientIp(r),
 		UserAgent:     r.UserAgent(),
 	}

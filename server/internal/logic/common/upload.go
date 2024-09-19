@@ -26,7 +26,7 @@ func init() {
 
 // UploadFile 上传文件
 func (s *sCommonUpload) UploadFile(ctx context.Context, uploadType string, file *ghttp.UploadFile) (res *sysin.AttachmentListModel, err error) {
-	attachment, err := storager.DoUpload(ctx, uploadType, file)
+	attachment, err := storager.DoUpload[any](ctx, uploadType, file)
 	if err != nil {
 		return
 	}
@@ -41,7 +41,7 @@ func (s *sCommonUpload) UploadFile(ctx context.Context, uploadType string, file 
 
 // CheckMultipart 检查文件分片
 func (s *sCommonUpload) CheckMultipart(ctx context.Context, in *sysin.CheckMultipartInp) (res *sysin.CheckMultipartModel, err error) {
-	data, err := storager.CheckMultipart(ctx, in.CheckMultipartParams)
+	data, err := storager.CheckMultipart[any](ctx, in.CheckMultipartParams)
 	if err != nil {
 		return nil, err
 	}

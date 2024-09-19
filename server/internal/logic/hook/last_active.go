@@ -71,7 +71,7 @@ func (s *sHook) lastAdminActive(r *ghttp.Request) {
 
 	var (
 		ctx    = r.Context()
-		member = contexts.GetUser(ctx)
+		member = contexts.GetUser[any](ctx)
 	)
 
 	if member == nil || member.App != consts.AppAdmin {
