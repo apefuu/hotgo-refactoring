@@ -26,7 +26,18 @@ var (
 	// 单元格表头
 	char = []string{"", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
 	// 默认行样式
-	defaultRowStyle = `{"font":{"color":"#666666","size":13,"family":"arial"},"alignment":{"vertical":"center","horizontal":"center"}}`
+	//defaultRowStyle = `{"font":{"color":"#666666","size":13,"family":"arial"},"alignment":{"vertical":"center","horizontal":"center"}}`
+	defaultRowStyle = &excelize.Style{
+		Font: &excelize.Font{
+			Color:  "#666666",
+			Size:   13,
+			Family: "arial",
+		},
+		Alignment: &excelize.Alignment{
+			Vertical:   "center",
+			Horizontal: "center",
+		},
+	}
 )
 
 // ExportByStructs 导出切片结构体到excel表格
